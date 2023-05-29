@@ -68,6 +68,59 @@
           },
           "responses": {}
         }
+      },
+      "/api/tasks/add": {
+        "post": {
+          "tags": ["Tasks - User"],
+          "description": "Create a New Task",
+          "security": [
+            {
+               "bearerAuth": []
+            }
+         ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                        "type": "string",
+                        "required": true,
+                        "example": "Testing Task"
+                    },
+                    "description": {
+                        "type": "string",
+                        "required": true,
+                        "example": "This is a testing task"
+                    },
+                    "dueDate": {
+                      "type": "date",
+                      "required": true,
+                      "example": "2023-05-29"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "required": true,
+                      "example": "64744e87f1092463ff3ed79f"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {}
+        }
+      }
+    },
+    "components": {        
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
+  }
   }
