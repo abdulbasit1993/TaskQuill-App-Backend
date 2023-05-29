@@ -1,32 +1,34 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 const app = express();
 
-const authRoutes = require('./routes/auth');
+const authRoutes = require("./routes/auth");
 
-const taskRoutes = require('./routes/tasks');
+const taskRoutes = require("./routes/tasks");
+
+const userRoutes = require("./routes/user");
 
 const cors = require("cors");
 
 let corsOptions = {
-    origin: "*"
+  origin: "*",
 };
 
 app.use(cors(corsOptions));
 
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const Role = require('./models/role');
+const Role = require("./models/role");
 
 const PORT = process.env.PORT || 3000;
 
@@ -34,53 +36,55 @@ app.use("/api", authRoutes);
 
 app.use("/api", taskRoutes);
 
-app.get('/', (req, res) => {
-res.send("Server is working!")
-})
+app.use("/api", userRoutes);
 
-mongoose.connect(process.env.MONGODB_URI)
-.then(() => {
-    console.log('Connected to Database');
+app.get("/", (req, res) => {
+  res.send("Server is working!");
+});
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Connected to Database");
     initial();
-})
-.catch(error => {
+  })
+  .catch((error) => {
     console.log(error);
-    process.exit()
-})
+    process.exit();
+  });
 
 function initial() {
-Role.estimatedDocumentCount()
-.then((count) => {
+  Role.estimatedDocumentCount().then((count) => {
     if (count === 0) {
-        new Role({
-            name: "user"
-        })
+      new Role({
+        name: "user",
+      })
         .save()
         .then(() => {
-            console.log("Added 'user' to roles collection");
+          console.log("Added 'user' to roles collection");
         })
         .catch((err) => {
-            if (err) {
-                console.log("error", err)
-            } 
+          if (err) {
+            console.log("error", err);
+          }
         });
 
-        new Role({
-            name: "admin"
-        })
+      new Role({
+        name: "admin",
+      })
         .save()
         .then(() => {
-            console.log("Added 'admin' to roles collection");
+          console.log("Added 'admin' to roles collection");
         })
         .catch((err) => {
-            if (err) {
-                console.log("error", err)
-            } 
-        })
+          if (err) {
+            console.log("error", err);
+          }
+        });
     }
-})
+  });
 }
 
 app.listen(PORT, () => {
-    console.log('Server is running on port', PORT)
-})
+  console.log("Server is running on port", PORT);
+});
