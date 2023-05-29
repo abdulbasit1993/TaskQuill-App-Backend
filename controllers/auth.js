@@ -107,7 +107,7 @@ function signin(req, res) {
             });
         }
 
-        var token = jwt.sign({id: user.id}, process.env.JWTSECRET, {
+        var token = jwt.sign({id: user.id, username: user.username, email: user.email}, process.env.JWTSECRET, {
             expiresIn: 86400 
             // token expires in 24 hours
         });
@@ -121,13 +121,8 @@ function signin(req, res) {
         res.status(200).json({
             success: true,
             message: "User login successful",
-            data: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                roles: authorities,
-                token: token
-            }
+            token: token,
+            roles: authorities
         })
     })
     .catch(err => {

@@ -8,7 +8,9 @@ const swaggerDocument = require('./swagger.json');
 
 const app = express();
 
-const authRoutes = require('./routes/auth')
+const authRoutes = require('./routes/auth');
+
+const taskRoutes = require('./routes/tasks');
 
 const cors = require("cors");
 
@@ -29,6 +31,8 @@ const Role = require('./models/role');
 const PORT = process.env.PORT || 3000;
 
 app.use("/api", authRoutes);
+
+app.use("/api", taskRoutes);
 
 app.get('/', (req, res) => {
 res.send("Server is working!")
