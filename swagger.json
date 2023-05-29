@@ -1,0 +1,73 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "TaskQuill API - v1",
+      "description": "API Docs for the TaskQuill (Task Management) Application.",
+      "version": "1.0"
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "paths": {
+      "/api/auth/register": {
+        "post": {
+          "tags": ["Auth"],
+          "description": "Create a new user",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "john"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "john123"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {}
+        }
+      },
+      "/api/auth/login": {
+        "post": {
+          "tags": ["Auth"],
+          "description": "User Login",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "john123"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {}
+        }
+      }
+    }
+  }
