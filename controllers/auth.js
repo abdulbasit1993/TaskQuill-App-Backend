@@ -105,10 +105,7 @@ function signin(req, res) {
 
       var token = jwt.sign(
         {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          roles: user.roles,
+          userId: user.id,
         },
         process.env.JWTSECRET,
         {
