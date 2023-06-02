@@ -32,7 +32,31 @@
                   },
                   "password": {
                     "type": "string",
-                    "example": "john123"
+                    "example": "test123"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "21st Street, XYZ Road, Houston, Texas, US"
+                  },
+                  "occupation": {
+                    "type": "string",
+                    "example": "Software Engineer"
+                  },
+                  "aboutMe": {
+                    "type": "string",
+                    "example": "Hello there! I am a test user."
                   }
                 }
               }
@@ -111,11 +135,6 @@
                     "type": "date",
                     "required": true,
                     "example": "2023-05-29"
-                  },
-                  "userId": {
-                    "type": "string",
-                    "required": true,
-                    "example": "64744e87f1092463ff3ed79f"
                   }
                 }
               }
