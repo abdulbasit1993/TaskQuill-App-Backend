@@ -11,6 +11,12 @@ function signup(req, res) {
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phone: req.body.phone,
+    address: req.body.address,
+    occupation: req.body.occupation,
+    aboutMe: req.body.aboutMe,
   });
 
   user

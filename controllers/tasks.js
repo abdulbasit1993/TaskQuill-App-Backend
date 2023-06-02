@@ -1,87 +1,91 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const Task = require('../models/task');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+const Task = require("../models/task");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const moment = require("moment");
 
 const addTask = async (req, res) => {
-    let {title, description, dueDate, userId} = req.body;
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWTSECRET);
+  const userId = decodedToken?.userId;
 
-    title = title.trim();
-    description = description.trim();
+  let { title, description, dueDate } = req.body;
 
-    if (!title && !description) {
-        return res.status(400).json({
-            success: false,
-            message: "Please enter title and description for the task",
-          });
-    }
+  title = title.trim();
+  description = description.trim();
 
-    const parsedDate = moment(dueDate, 'YYYY-MM-DD', true);
+  if (!title && !description) {
+    return res.status(400).json({
+      success: false,
+      message: "Please enter title and description for the task",
+    });
+  }
 
-    if (!parsedDate.isValid()) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid date format",
-          });
-    }
+  const parsedDate = moment(dueDate, "YYYY-MM-DD", true);
 
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid user id",
-          });
-    }
+  if (!parsedDate.isValid()) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid date format",
+    });
+  }
 
-    const newTask = new Task({
-        title: title,
-        description: description,
-        dueDate: dueDate,
-        userId: userId
-    })
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid user id",
+    });
+  }
 
-    await newTask.save()
+  const newTask = new Task({
+    title: title,
+    description: description,
+    dueDate: dueDate,
+    userId: userId,
+  });
+
+  await newTask
+    .save()
     .then((task) => {
-        res.status(201).json({
-            success: true,
-            message: "Task created successfully",
-            data: task
-        });
+      res.status(201).json({
+        success: true,
+        message: "Task created successfully",
+        data: task,
+      });
     })
     .catch((err) => {
-        res.status(500).json({
-            success: false,
-            message: err,
-          });
-    })
-}
+      res.status(500).json({
+        success: false,
+        message: err,
+      });
+    });
+};
 
 const getTasks = async (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
 
-    const authHeader = req.headers.authorization;
-    const token = authHeader.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWTSECRET);
+  const userId = decodedToken.userId;
 
-    const decodedToken = jwt.verify(token, process.env.JWTSECRET);
-    const userId = decodedToken.id;
-
-    await Task.find({ userId: userId })
+  await Task.find({ userId: userId })
     .then((task) => {
-        res.status(200).json({
-            success: true,
-            data: task
-        })
+      res.status(200).json({
+        success: true,
+        data: task,
+      });
     })
     .catch((err) => {
-        res.status(500).json({
-            success: false,
-            message: err,
-          });
-    })
-    
-}
+      res.status(500).json({
+        success: false,
+        message: err,
+      });
+    });
+};
 
 module.exports = {
-    addTask,
-    getTasks
-}
+  addTask,
+  getTasks,
+};
