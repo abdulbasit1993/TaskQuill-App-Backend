@@ -1,120 +1,144 @@
 {
-    "openapi": "3.0.3",
-    "info": {
-      "title": "TaskQuill API - v1",
-      "description": "API Docs for the TaskQuill (Task Management) Application.",
-      "version": "1.0"
-    },
-    "servers": [
-      {
-        "url": "/"
-      }
-    ],
-    "paths": {
-      "/api/auth/register": {
-        "post": {
-          "tags": ["Auth"],
-          "description": "Create a new user",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "username": {
-                      "type": "string",
-                      "example": "john"
-                    },
-                    "email": {
-                        "type": "string",
-                        "example": "john@example.com"
-                    },
-                    "password": {
-                        "type": "string",
-                        "example": "john123"
-                    }
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TaskQuill API - v1",
+    "description": "API Docs for the TaskQuill (Task Management) Application.",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "john"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "john123"
                   }
                 }
               }
             }
-          },
-          "responses": {}
-        }
-      },
-      "/api/auth/login": {
-        "post": {
-          "tags": ["Auth"],
-          "description": "User Login",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                        "type": "string",
-                        "example": "john@example.com"
-                    },
-                    "password": {
-                        "type": "string",
-                        "example": "john123"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {}
-        }
-      },
-      "/api/tasks/add": {
-        "post": {
-          "tags": ["Tasks - User"],
-          "description": "Create a New Task",
-          "security": [
-            {
-               "bearerAuth": []
-            }
-         ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                        "type": "string",
-                        "required": true,
-                        "example": "Testing Task"
-                    },
-                    "description": {
-                        "type": "string",
-                        "required": true,
-                        "example": "This is a testing task"
-                    },
-                    "dueDate": {
-                      "type": "date",
-                      "required": true,
-                      "example": "2023-05-29"
-                    },
-                    "userId": {
-                      "type": "string",
-                      "required": true,
-                      "example": "64744e87f1092463ff3ed79f"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {}
-        }
+          }
+        },
+        "responses": {}
       }
     },
-    "components": {        
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "User Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "test123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/api/users/profile": {
+      "get": {
+        "tags": ["Users"],
+        "description": "Get User Profile Information",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/tasks/add": {
+      "post": {
+        "tags": ["Tasks - User"],
+        "description": "Create a New Task",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "required": true,
+                    "example": "Testing Task"
+                  },
+                  "description": {
+                    "type": "string",
+                    "required": true,
+                    "example": "This is a testing task"
+                  },
+                  "dueDate": {
+                    "type": "date",
+                    "required": true,
+                    "example": "2023-05-29"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "required": true,
+                    "example": "64744e87f1092463ff3ed79f"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/api/tasks/getAll": {
+      "get": {
+        "tags": ["Tasks - User"],
+        "description": "Get User Tasks",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    }
+  },
+  "components": {
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
@@ -123,4 +147,4 @@
       }
     }
   }
-  }
+}
