@@ -6,21 +6,21 @@ const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-const app = express();
-
-const authRoutes = require("./routes/auth");
-
-const taskRoutes = require("./routes/tasks");
-
-const userRoutes = require("./routes/user");
-
 const cors = require("cors");
 
 let corsOptions = {
   origin: "*",
 };
 
+const app = express();
+
 app.use(cors(corsOptions));
+
+const authRoutes = require("./routes/auth");
+
+const taskRoutes = require("./routes/tasks");
+
+const userRoutes = require("./routes/user");
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -41,17 +41,6 @@ app.use("/api", userRoutes);
 app.get("/", (req, res) => {
   res.send("Server is working!");
 });
-
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("Connected to Database");
-    initial();
-  })
-  .catch((error) => {
-    console.log(error);
-    process.exit();
-  });
 
 function initial() {
   Role.estimatedDocumentCount().then((count) => {
@@ -87,4 +76,15 @@ function initial() {
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
+
+  mongoose
+    .connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log("Connected to Database");
+      initial();
+    })
+    .catch((error) => {
+      console.log(error);
+      process.exit();
+    });
 });
