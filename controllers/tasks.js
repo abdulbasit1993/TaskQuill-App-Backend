@@ -23,14 +23,14 @@ const addTask = async (req, res) => {
     });
   }
 
-  const parsedDate = moment(dueDate, "YYYY-MM-DD", true);
+  // const parsedDate = moment(dueDate, "YYYY-MM-DD", true);
 
-  if (!parsedDate.isValid()) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid date format",
-    });
-  }
+  // if (!parsedDate.isValid()) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Invalid date format",
+  //   });
+  // }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({
