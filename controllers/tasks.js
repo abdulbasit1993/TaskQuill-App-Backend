@@ -85,7 +85,26 @@ const getTasks = async (req, res) => {
     });
 };
 
+const deleteTask = async (req, res) => {
+  const id = req.params.id;
+
+  await Task.findByIdAndDelete(id)
+    .then(() => {
+      res.status(200).json({
+        success: true,
+        message: "Todo Deleted Successfully",
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: err,
+      });
+    });
+};
+
 module.exports = {
   addTask,
   getTasks,
+  deleteTask,
 };

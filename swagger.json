@@ -155,6 +155,29 @@
         ],
         "responses": {}
       }
+    },
+    "/api/tasks/delete/{id}": {
+      "delete": {
+        "tags": ["Tasks - User"],
+        "description": "Delete a user task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
     }
   },
   "components": {
