@@ -156,6 +156,73 @@
         "responses": {}
       }
     },
+    "/api/tasks/update/{id}": {
+      "put": {
+        "tags": ["Tasks - User"],
+        "description": "Update user task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Updated Task"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "This is an updated task"
+                  },
+                  "dueDate": {
+                    "type": "date",
+                    "example": "2023-09-16"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/tasks/toggleStatus/{id}": {
+      "patch": {
+        "tags": ["Tasks - User"],
+        "description": "Toggle the status of user task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/api/tasks/delete/{id}": {
       "delete": {
         "tags": ["Tasks - User"],

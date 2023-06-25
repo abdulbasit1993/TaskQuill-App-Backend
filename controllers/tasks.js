@@ -23,15 +23,6 @@ const addTask = async (req, res) => {
     });
   }
 
-  // const parsedDate = moment(dueDate, "YYYY-MM-DD", true);
-
-  // if (!parsedDate.isValid()) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: "Invalid date format",
-  //   });
-  // }
-
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({
       success: false,
@@ -85,6 +76,79 @@ const getTasks = async (req, res) => {
     });
 };
 
+const updateTask = async (req, res) => {
+  const id = req.params.id;
+
+  let { title, description, dueDate } = req.body;
+
+  title = title.trim();
+  description = description.trim();
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid task id",
+    });
+  }
+
+  await Task.findByIdAndUpdate(id, {
+    title: title,
+    description: description,
+    dueDate: dueDate,
+  })
+    .then((task) => {
+      res.status(200).json({
+        success: true,
+        message: "Task Updated Successfully",
+        data: task,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: err,
+      });
+    });
+};
+
+const toggleCompleteTask = async (req, res) => {
+  const id = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid task id",
+    });
+  }
+
+  await Task.findById(id)
+    .then((task) => {
+      task.status = task.status === "incomplete" ? "completed" : "incomplete";
+
+      task
+        .save()
+        .then((data) => {
+          res.status(200).json({
+            success: true,
+            message: "Task Updated Successfully",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        });
+    })
+    .catch((err) => {
+      res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    });
+};
+
 const deleteTask = async (req, res) => {
   const id = req.params.id;
 
@@ -106,5 +170,7 @@ const deleteTask = async (req, res) => {
 module.exports = {
   addTask,
   getTasks,
+  updateTask,
+  toggleCompleteTask,
   deleteTask,
 };
