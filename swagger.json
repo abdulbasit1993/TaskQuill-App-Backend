@@ -93,6 +93,60 @@
         "responses": {}
       }
     },
+    "/api/auth/forget-password": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Forget Password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Reset Password using OTP Code",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "otpCode": {
+                    "type": "string",
+                    "example": "3648"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "testing1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
     "/api/users/profile": {
       "get": {
         "tags": ["Users"],
