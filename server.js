@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-const cron = require("node-cron");
+const schedule = require("node-schedule");
 const Task = require("./models/task");
 
 const cors = require("cors");
@@ -101,7 +101,7 @@ const updateExpiredTasks = async () => {
   }
 };
 
-cron.schedule("* * * * *", updateExpiredTasks);
+const scheduledTask = schedule.scheduleJob("* * * * *", updateExpiredTasks);
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
