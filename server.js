@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+const cron = require("node-cron");
+const Task = require("./models/task");
 
 const cors = require("cors");
 
@@ -73,6 +75,33 @@ function initial() {
     }
   });
 }
+
+const updateExpiredTasks = async () => {
+  try {
+    const currentTime = new Date();
+
+    const tasks = await Task.find({ status: "Pending" });
+
+    tasks.forEach(async (task) => {
+      const taskTimeParts = task.time.split(":");
+      const taskHour = parseInt(taskTimeParts[0]);
+      const taskMinute = parseInt(taskTimeParts[1]);
+
+      const taskDateTime = new Date(task.date);
+      taskDateTime.setHours(taskHour, taskMinute, 0, 0);
+
+      if (currentTime >= taskDateTime) {
+        task.status = "Expired";
+        await task.save();
+        console.log(`Task ${task.title} has been marked as Expired.`);
+      }
+    });
+  } catch (error) {
+    console.log("Error updating expired tasks: ", error);
+  }
+};
+
+cron.schedule("* * * * *", updateExpiredTasks);
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);

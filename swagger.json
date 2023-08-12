@@ -182,13 +182,16 @@
                   },
                   "description": {
                     "type": "string",
-                    "required": true,
                     "example": "This is a testing task"
                   },
-                  "dueDate": {
+                  "date": {
                     "type": "date",
                     "required": true,
-                    "example": "2023-05-29"
+                    "example": "2023-08-20"
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "21:18"
                   }
                 }
               }
@@ -238,37 +241,23 @@
                     "type": "string",
                     "example": "This is an updated task"
                   },
-                  "dueDate": {
+                  "date": {
                     "type": "date",
-                    "example": "2023-09-16"
+                    "example": "2023-08-12"
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "21:03"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["Pending", "Completed"]
                   }
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {}
-      }
-    },
-    "/api/tasks/toggleStatus/{id}": {
-      "patch": {
-        "tags": ["Tasks - User"],
-        "description": "Toggle the status of user task",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "security": [
           {
             "bearerAuth": []

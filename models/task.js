@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const userSchema = new mongoose.Schema({
+  username: String,
+  _id: mongoose.Schema.Types.ObjectId,
+});
+
 const TaskSchema = new mongoose.Schema(
   {
     title: {
@@ -12,20 +17,20 @@ const TaskSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    dueDate: {
+    date: {
       type: Date,
+      required: true,
+    },
+    time: {
+      type: String,
       required: true,
     },
     status: {
       type: String,
-      enum: ["completed", "incomplete"],
-      default: "incomplete",
+      enum: ["Pending", "Completed", "Expired"],
+      default: "Pending",
     },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    user: userSchema,
   },
   { timestamps: true }
 );

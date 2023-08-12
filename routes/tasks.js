@@ -12,11 +12,6 @@ router.put("/tasks/update/:id", [
   taskController.updateTask,
 ]);
 
-router.patch("/tasks/toggleStatus/:id", [
-  authJwt.verifyToken,
-  taskController.toggleCompleteTask,
-]);
-
 router.delete(
   "/tasks/delete/:id",
   [authJwt.verifyToken],
