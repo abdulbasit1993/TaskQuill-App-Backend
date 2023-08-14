@@ -99,6 +99,11 @@ const getTasks = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWTSECRET);
+  const userId = decodedToken?.userId;
+
   const id = req.params.id;
 
   let { title, description, date, time, status } = req.body;
