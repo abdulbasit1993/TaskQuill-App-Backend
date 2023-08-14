@@ -25,26 +25,6 @@ const addTask = async (req, res) => {
     });
   }
 
-  // Validate time format (HH:mm) using regex
-  // const timeregex = /^([01]\d|2[0-3]):[0-5]\d$/;
-  // if (!timeregex.test(time)) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: "Invalid time format. Please use HH:mm format.",
-  //   });
-  // }
-
-  // Convert time to Date object to check if it's valid time
-  // const [hours, minutes] = time.split(":");
-  // const timeDate = new Date(0, 0, 0, hours, minutes);
-
-  // if (isNaN(timeDate.getTime())) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: "Invalid time",
-  //   });
-  // }
-
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({
       success: false,
@@ -122,6 +102,7 @@ const updateTask = async (req, res) => {
   const id = req.params.id;
 
   let { title, description, date, time, status } = req.body;
+  let userObj = {};
 
   title = title.trim();
   description = description.trim();
@@ -133,26 +114,6 @@ const updateTask = async (req, res) => {
     });
   }
 
-  // // Validate time format (HH:mm) using regex
-  // const timeregex = /^([01]\d|2[0-3]):[0-5]\d$/;
-  // if (!timeregex.test(time)) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: "Invalid time format. Please use HH:mm format.",
-  //   });
-  // }
-
-  // // Convert time to Date object to check if it's valid time
-  // const [hours, minutes] = time.split(":");
-  // const timeDate = new Date(0, 0, 0, hours, minutes);
-
-  // if (isNaN(timeDate.getTime())) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: "Invalid time",
-  //   });
-  // }
-
   // Validate status against enum values
   if (!["Pending", "Completed"].includes(status)) {
     return res.status(400).json({
@@ -161,12 +122,32 @@ const updateTask = async (req, res) => {
     });
   }
 
+  await User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+      userObj.username = user.username;
+      userObj._id = user._id;
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: err,
+      });
+    });
+
   let updatedTask = {
     title: title,
     description: description,
     date: date,
     time: time,
     status: status,
+    user: userObj,
   };
 
   await Task.findByIdAndUpdate(id, updatedTask)
