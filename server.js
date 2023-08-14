@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-const schedule = require("node-schedule");
+const moment = require("moment-timezone");
+const cron = require("node-cron");
 const Task = require("./models/task");
 
 const cors = require("cors");
@@ -78,30 +79,43 @@ function initial() {
 
 const updateExpiredTasks = async () => {
   try {
-    const currentTime = new Date();
+    const currentDateTime = new Date();
+    console.log("currentTime is ==>> ", currentDateTime);
 
     const tasks = await Task.find({ status: "Pending" });
 
-    tasks.forEach(async (task) => {
-      const taskTimeParts = task.time.split(":");
-      const taskHour = parseInt(taskTimeParts[0]);
-      const taskMinute = parseInt(taskTimeParts[1]);
+    for (const task of tasks) {
+      const taskLocalDateTime = new Date(
+        task.date.getFullYear(),
+        task.date.getMonth(),
+        task.date.getDate(),
+        task.time.getHours(),
+        task.time.getMinutes(),
+        task.time.getSeconds()
+      );
 
-      const taskDateTime = new Date(task.date);
-      taskDateTime.setHours(taskHour, taskMinute, 0, 0);
+      const taskDateTimeUTC = new Date(
+        taskLocalDateTime.getUTCFullYear(),
+        taskLocalDateTime.getUTCMonth(),
+        taskLocalDateTime.getUTCDate(),
+        taskLocalDateTime.getUTCHours(),
+        taskLocalDateTime.getUTCMinutes(),
+        taskLocalDateTime.getUTCSeconds()
+      );
 
-      if (currentTime >= taskDateTime) {
+      if (currentDateTime >= taskDateTimeUTC) {
+        console.log("Time has passed for task:", task.title);
         task.status = "Expired";
         await task.save();
         console.log(`Task ${task.title} has been marked as Expired.`);
       }
-    });
+    }
   } catch (error) {
     console.log("Error updating expired tasks: ", error);
   }
 };
 
-const scheduledTask = schedule.scheduleJob("* * * * *", updateExpiredTasks);
+cron.schedule("* * * * *", updateExpiredTasks);
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);

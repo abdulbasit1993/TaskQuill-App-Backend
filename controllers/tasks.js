@@ -26,24 +26,24 @@ const addTask = async (req, res) => {
   }
 
   // Validate time format (HH:mm) using regex
-  const timeregex = /^([01]\d|2[0-3]):[0-5]\d$/;
-  if (!timeregex.test(time)) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid time format. Please use HH:mm format.",
-    });
-  }
+  // const timeregex = /^([01]\d|2[0-3]):[0-5]\d$/;
+  // if (!timeregex.test(time)) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Invalid time format. Please use HH:mm format.",
+  //   });
+  // }
 
   // Convert time to Date object to check if it's valid time
-  const [hours, minutes] = time.split(":");
-  const timeDate = new Date(0, 0, 0, hours, minutes);
+  // const [hours, minutes] = time.split(":");
+  // const timeDate = new Date(0, 0, 0, hours, minutes);
 
-  if (isNaN(timeDate.getTime())) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid time",
-    });
-  }
+  // if (isNaN(timeDate.getTime())) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Invalid time",
+  //   });
+  // }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({
@@ -133,25 +133,25 @@ const updateTask = async (req, res) => {
     });
   }
 
-  // Validate time format (HH:mm) using regex
-  const timeregex = /^([01]\d|2[0-3]):[0-5]\d$/;
-  if (!timeregex.test(time)) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid time format. Please use HH:mm format.",
-    });
-  }
+  // // Validate time format (HH:mm) using regex
+  // const timeregex = /^([01]\d|2[0-3]):[0-5]\d$/;
+  // if (!timeregex.test(time)) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Invalid time format. Please use HH:mm format.",
+  //   });
+  // }
 
-  // Convert time to Date object to check if it's valid time
-  const [hours, minutes] = time.split(":");
-  const timeDate = new Date(0, 0, 0, hours, minutes);
+  // // Convert time to Date object to check if it's valid time
+  // const [hours, minutes] = time.split(":");
+  // const timeDate = new Date(0, 0, 0, hours, minutes);
 
-  if (isNaN(timeDate.getTime())) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid time",
-    });
-  }
+  // if (isNaN(timeDate.getTime())) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Invalid time",
+  //   });
+  // }
 
   // Validate status against enum values
   if (!["Pending", "Completed"].includes(status)) {
