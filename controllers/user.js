@@ -34,6 +34,7 @@ const getUserProfile = async (req, res) => {
       address: user?.address,
       occupation: user?.occupation,
       aboutMe: user?.aboutMe,
+      profileImage: user?.profileImage,
       roles: roles,
       createdAt: user?.createdAt,
       updatedAt: user?.updatedAt,
@@ -62,8 +63,6 @@ const uploadProfileImage = async (req, res) => {
     const token = authHeader.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.JWTSECRET);
     const userId = decodedToken?.userId;
-
-    const { profileImage } = req.body;
 
     const user = await User.findById(userId);
 

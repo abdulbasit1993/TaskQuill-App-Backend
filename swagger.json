@@ -159,6 +159,33 @@
         "responses": {}
       }
     },
+    "/api/users/upload-image": {
+      "put": {
+        "tags": ["Users"],
+        "description": "Upload a User's Profile Image",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profileImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/api/tasks/add": {
       "post": {
         "tags": ["Tasks - User"],
