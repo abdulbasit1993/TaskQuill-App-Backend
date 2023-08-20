@@ -29,6 +29,9 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    profileImage: {
+      type: String,
+    },
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
