@@ -31,6 +31,12 @@ router.get(
 );
 
 router.put(
+  "/users/update",
+  [authJwt.verifyToken],
+  userController.updateUserProfile
+);
+
+router.put(
   "/users/upload-image",
   [authJwt.verifyToken],
   upload.single("profileImage"),

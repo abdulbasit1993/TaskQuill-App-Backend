@@ -159,6 +159,57 @@
         "responses": {}
       }
     },
+    "/api/users/update": {
+      "put": {
+        "tags": ["Users"],
+        "description": "Update the User Profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "johndoe"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "ABC Street, Mereweather road, 123 Ave, TX, US"
+                  },
+                  "occupation": {
+                    "type": "string",
+                    "example": "Computer Operator"
+                  },
+                  "aboutMe": {
+                    "type": "string",
+                    "example": "Hello There! My name is John Doe."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
     "/api/users/upload-image": {
       "put": {
         "tags": ["Users"],

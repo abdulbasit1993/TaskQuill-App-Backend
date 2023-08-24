@@ -52,6 +52,61 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const updateUserProfile = async (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWTSECRET);
+  const userId = decodedToken?.userId;
+
+  let { username, firstName, lastName, phone, address, occupation, aboutMe } =
+    req.body;
+
+  // function checkEmptyFields(obj) {
+  //   return Object.values(obj).every(
+  //     (value) => value === undefined || value === null || value === ""
+  //   );
+  // }
+
+  let updatedUser = {
+    username: username,
+    firstName: firstName,
+    lastName: lastName,
+    phone: phone,
+    address: address,
+    occupation: occupation,
+    aboutMe: aboutMe,
+  };
+
+  // if (checkEmptyFields(updatedUser)) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "All fields are empty",
+  //   });
+  // }
+
+  try {
+    await User.findByIdAndUpdate(userId, updatedUser, { new: true })
+      .then((user) => {
+        res.status(200).json({
+          success: true,
+          message: "User Profile Updated Successfully",
+          data: user,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          success: false,
+          message: error,
+        });
+      });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+
 const s3 = new Aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_ACCESS_KEY_SECRET,
@@ -118,5 +173,6 @@ const uploadProfileImage = async (req, res) => {
 
 module.exports = {
   getUserProfile,
+  updateUserProfile,
   uploadProfileImage,
 };
